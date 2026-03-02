@@ -51,7 +51,8 @@ export const TodoList = ({
             completed: todo.completed,
           })}
         >
-          <div className="todo__status-label">
+          <label className="todo__status-label">
+            {' '}
             <input
               data-cy="TodoStatus"
               type="checkbox"
@@ -59,7 +60,7 @@ export const TodoList = ({
               checked={todo.completed}
               onChange={() => handleComplete(todo.id, !todo.completed)}
             />
-          </div>
+          </label>
 
           {editingId === todo.id ? (
             <input
