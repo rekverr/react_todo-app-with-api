@@ -7,6 +7,7 @@ import {
   updateTodoTitle,
 } from '../api/todos';
 import { Todo } from '../types/Todo';
+import { ErrorMessage } from '../types/ErrorMessage';
 
 export const useTodos = (onError: (message: string) => void) => {
   const [todos, setTodos] = useState<Todo[]>([]);
@@ -23,7 +24,7 @@ export const useTodos = (onError: (message: string) => void) => {
     getTodos()
       .then(setTodos)
       .catch(() => {
-        onError('Unable to load todos');
+        onError(ErrorMessage.LOAD_TODOS);
       });
   }, [onError]);
 

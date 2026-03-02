@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef } from 'react';
+import classNames from 'classnames';
 import { TodoList } from './components/TodoList';
 import { UserWarning } from './UserWarning';
 import { USER_ID } from './api/todos';
@@ -7,7 +8,7 @@ import { FilterTodo } from './components/FilterTodo';
 import { useTodos } from './hooks/useTodos';
 import { useErrorMessage } from './hooks/useErrorMessage';
 import { filterTodos, FilterType } from './utils/todoFilters';
-import classNames from 'classnames';
+import { ErrorMessage } from './types/ErrorMessage';
 
 export const App: React.FC = () => {
   const [filter, setFilter] = useState<FilterType>(FilterType.ALL);
@@ -52,7 +53,7 @@ export const App: React.FC = () => {
     const trimmedTitle = newTodoTitle.trim();
 
     if (!trimmedTitle) {
-      setErrorMessage('Title should not be empty');
+      setErrorMessage(ErrorMessage.EMPTY_TITLE);
 
       return;
     }
@@ -61,7 +62,7 @@ export const App: React.FC = () => {
       await handleAddTodo(trimmedTitle, USER_ID);
       setNewTodoTitle('');
     } catch {
-      setErrorMessage('Unable to add a todo');
+      setErrorMessage(ErrorMessage.ADD_TODO);
     }
   };
 
@@ -69,7 +70,7 @@ export const App: React.FC = () => {
     try {
       await handleCompletedTodo(id, completed);
     } catch {
-      setErrorMessage('Unable to update a todo');
+      setErrorMessage(ErrorMessage.UPDATE_TODO);
     }
   };
 
@@ -79,7 +80,7 @@ export const App: React.FC = () => {
     try {
       await handleToggleAllTodos(hasActiveTodos);
     } catch {
-      setErrorMessage('Unable to update a todo');
+      setErrorMessage(ErrorMessage.UPDATE_TODO);
     }
   };
 
@@ -89,7 +90,7 @@ export const App: React.FC = () => {
     try {
       shouldDelete = await handleCommitEdit(id, title);
     } catch {
-      setErrorMessage('Unable to update a todo');
+      setErrorMessage(ErrorMessage.UPDATE_TODO);
 
       return;
     }
@@ -99,7 +100,7 @@ export const App: React.FC = () => {
         await handleDeleteTodo(id);
         handleCancelEdit();
       } catch {
-        setErrorMessage('Unable to delete a todo');
+        setErrorMessage(ErrorMessage.DELETE_TODO);
       }
     }
   };
@@ -108,7 +109,7 @@ export const App: React.FC = () => {
     try {
       await handleDeleteTodo(id);
     } catch {
-      setErrorMessage('Unable to delete a todo');
+      setErrorMessage(ErrorMessage.DELETE_TODO);
     }
   };
 
